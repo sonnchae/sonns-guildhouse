@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Portfolio | Sonn</title>
+<meta name="description" content="Posters, reels and designs by Sonn, a freelance marketer in Singapore.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;800&family=Inter:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+  :root {
+    color-scheme: light dark;
+    --bg: #ffffff;
+    --fg: #0a0a0a;
+    --mute: #5c5c5c;
+    --line: #0a0a0a;
+    --soft: #e6e6e6;
+    --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+    --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --gap: 16px;
+    --tile-h: clamp(240px, 36vw, 440px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0a0a0a; --fg: #f5f5f5; --mute: #a3a3a3; --line: #f5f5f5; --soft: #232323; }
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    padding-block: 24px 48px;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  a { color: inherit; }
+  a:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+  .wrap { max-width: 1040px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+  .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
+
+  header { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding-bottom: 16px; border-bottom: 2px solid var(--line); }
+  .wordmark { font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.01em; text-decoration: none; }
+  .back { font-family: var(--font-mono); font-size: 13px; }
+
+  .hero { padding-block: clamp(40px, 8vw, 88px) clamp(32px, 5vw, 56px); }
+  h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 8.4vw, 92px); line-height: 0.98; letter-spacing: -0.035em; margin: 0; }
+  .lede { margin: 24px 0 0; max-width: 52ch; font-size: clamp(17px, 2.2vw, 20px); color: var(--mute); }
+
+  /* Carousel: full-bleed rows that drift slowly in opposite directions. */
+  .reel { overflow: hidden; padding-block: 8px; }
+  .reel + .reel { margin-top: 8px; }
+  .track { display: flex; width: max-content; animation: drift var(--dur, 60s) linear infinite; will-change: transform; }
+  .reel.rev .track { animation-direction: reverse; }
+  .reel:hover .track, .reel:focus-within .track, .reel.paused .track { animation-play-state: paused; }
+  .set { display: flex; gap: var(--gap); padding-right: var(--gap); }
+  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  .tile { flex: none; margin: 0; }
+  .art {
+    display: block;
+    height: var(--tile-h);
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+    background: var(--soft);
+    border-radius: 2px;
+  }
+  .ph { display: grid; place-items: center; height: var(--tile-h); aspect-ratio: 4 / 5; background: var(--soft); color: var(--mute); border-radius: 2px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+  figcaption { margin-top: 8px; display: flex; justify-content: space-between; gap: 12px; }
+
+  .hint { margin: 20px 0 0; }
+
+  footer { margin-top: 56px; border-top: 2px solid var(--line); padding-top: 40px; }
+  footer h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 5.5vw, 56px); line-height: 1; letter-spacing: -0.03em; margin: 0 0 24px; max-width: 16ch; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; font-family: var(--font-display); font-weight: 500; font-size: 16px; text-decoration: none; padding: 14px 22px; border: 2px solid var(--fg); background: var(--fg); color: var(--bg); transition: background .15s ease, color .15s ease; }
+  .btn:hover { background: var(--bg); color: var(--fg); }
+  .foot-meta { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-top: 56px; }
+
+  @media (max-width: 720px) {
+    :root { --gap: 12px; }
+    .btn { width: 100%; justify-content: space-between; }
+  }
+  /* Large monitors: scale up, same as the main page. */
+  @media (min-width: 1600px) { .wrap { zoom: 1.2; } .reel { zoom: 1.2; } }
+  @media (min-width: 2200px) { .wrap { zoom: 1.5; } .reel { zoom: 1.5; } }
+
+  /* Reduced motion: no drifting, swipe through by hand instead. */
+  @media (prefers-reduced-motion: reduce) {
+    .reel { overflow-x: auto; }
+    .track { animation: none; }
+    .set + .set { display: none; }
+    .set { padding-left: max(16px, env(safe-area-inset-left, 0px)); }
+    .btn { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <a class="wordmark" href="index.html">Sonn</a>
+    <a class="back label" href="index.html">← Back</a>
+  </header>
+
+  <div class="hero">
+    <h1>Portfolio.</h1>
+    <p class="lede">Posters, reels and designs from the brands I work with.</p>
+  </div>
+</div>
+
+<main>
+  <div class="reel" id="row-a" aria-label="Selected artwork, row 1"><div class="track"></div></div>
+  <div class="reel rev" id="row-b" aria-label="Selected artwork, row 2"><div class="track"></div></div>
+  <div class="wrap"><p class="hint label">Hover or press and hold to pause.</p></div>
+</main>
+
+<div class="wrap">
+  <footer>
+    <h2>Like what you see?</h2>
+    <a class="btn" href="index.html#mcnugs">Back to the main page <span aria-hidden="true">↗</span></a>
+    <div class="foot-meta">
+      <span class="label">Sonn</span>
+      <span class="label">Freelance creative, Singapore</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+  // ADD YOUR ARTWORK HERE.
+  // One entry per piece. "src" is the image file (put the file next to this page, e.g. "joya-poster-1.jpg").
+  // While "src" is empty, a grey placeholder shows. Add as many entries as you like; the carousel adjusts.
+  var WORKS = [
+    { src: "", title: "Artwork 01", client: "Joya Onsen Café" },
+    { src: "", title: "Artwork 02", client: "Wanderhow BBQ" },
+    { src: "", title: "Artwork 03", client: "Panda Medical Concierge" },
+    { src: "", title: "Artwork 04", client: "YGG Lash" },
+    { src: "", title: "Artwork 05", client: "Joya Onsen Café" },
+    { src: "", title: "Artwork 06", client: "Wanderhow BBQ" },
+    { src: "", title: "Artwork 07", client: "Panda Medical Concierge" },
+    { src: "", title: "Artwork 08", client: "YGG Lash" }
+  ];
+
+  function tile(w, hidden) {
+    var f = document.createElement("figure");
+    f.className = "tile";
+    var art;
+    if (w.src) {
+      art = document.createElement("img");
+      art.className = "art";
+      art.src = w.src;
+      art.alt = hidden ? "" : (w.title + " for " + w.client);
+      art.loading = "lazy";
+      art.draggable = false;
+    } else {
+      art = document.createElement("div");
+      art.className = "ph";
+      art.textContent = w.title;
+    }
+    f.appendChild(art);
+    var c = document.createElement("figcaption");
+    var a = document.createElement("span"); a.className = "label"; a.textContent = w.client;
+    c.appendChild(a);
+    f.appendChild(c);
+    if (hidden) f.setAttribute("aria-hidden", "true");
+    return f;
+  }
+
+  function build(rowId, list) {
+    var track = document.querySelector("#" + rowId + " .track");
+    for (var copy = 0; copy < 2; copy++) {
+      var set = document.createElement("div");
+      set.className = "set";
+      list.forEach(function (w) { set.appendChild(tile(w, copy === 1)); });
+      track.appendChild(set);
+    }
+    // Slower drift when there is more to see.
+    track.style.setProperty("--dur", Math.max(30, list.length * 9) + "s");
+  }
+
+  build("row-a", WORKS);
+  build("row-b", WORKS.slice().reverse());
+
+  // Press and hold (touch) pauses the row.
+  document.querySelectorAll(".reel").forEach(function (r) {
+    r.addEventListener("touchstart", function () { r.classList.add("paused"); }, { passive: true });
+    ["touchend", "touchcancel"].forEach(function (ev) {
+      r.addEventListener(ev, function () { r.classList.remove("paused"); }, { passive: true });
+    });
+  });
+</script>
+</body>
+</html>
