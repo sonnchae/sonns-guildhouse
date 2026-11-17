@@ -121,6 +121,13 @@
     border-top: 1px solid var(--soft);
   }
   .logo { display: block; width: 120px; height: 120px; margin-top: 16px; border-radius: 50%; }
+  .guild-art { display: block; width: 100%; max-width: 240px; height: auto; aspect-ratio: 3 / 2; object-fit: cover; margin-top: 16px; border: 1px solid var(--fg); }
+  .guild-lead { font-family: var(--font-display); font-weight: 800; font-size: 20px; line-height: 1.2; margin: 0 0 8px; }
+  .guild-stat { margin-top: 16px !important; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; margin: 0 0 16px; padding: 12px 0; border-block: 1px solid var(--soft); }
+  .guild-stat strong { font-family: var(--font-display); font-weight: 800; }
+  .invite { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: 16px; }
+  .invite .btn { padding: 10px 18px; font-size: 15px; }
+  .tags li.solid { background: var(--fg); color: var(--bg); }
   .row:first-of-type { border-top: 0; }
   .row h2 {
     font-family: var(--font-display);
@@ -221,12 +228,14 @@
         </div>
         <div>
           <h2>Wanderhow BBQ</h2>
-          <p>Social content, Google Ads, SEO and GEO (getting found in AI search) for a Singapore BBQ catering company.</p>
+          <p>Social content, Google Ads, SEO and GEO (getting found in AI search) for a Singapore BBQ catering company. I also help with their website design and technical site audits.</p>
           <ul class="tags">
             <li>Google Ads</li>
             <li>SEO</li>
             <li>GEO</li>
             <li>Competitive analysis</li>
+            <li>Website design</li>
+            <li>Site audits</li>
             <li>Social content</li>
           </ul>
           <a class="site" href="https://wanderhow.sg" rel="noopener">wanderhow.sg ↗</a>
@@ -265,7 +274,7 @@
             <li>Video editing</li>
             <li>Health content</li>
           </ul>
-          <a class="site" href="https://www.instagram.com/pandamedicalservices/" rel="noopener">See the work on Instagram ↗</a>
+          <a class="site" href="https://pandamedical.sg/" target="_blank" rel="noopener noreferrer">pandamedical.sg ↗</a>
         </div>
       </article>
 
@@ -321,6 +330,40 @@
     </article>
   </section>
 
+  <section id="mcnugs" aria-labelledby="mcnugs-title" style="margin-top:24px">
+    <div class="sec-head">
+      <span class="label" id="mcnugs-title">Project</span>
+    </div>
+    <article class="row">
+      <div>
+        <span class="label">Gaming &amp; hobby guild</span>
+        <!-- McNug's illustration slot. Replace the src below with the McNug's fantasy world illustration. -->
+        <img class="guild-art" id="mcnugs-art" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNDAgMTYwIj48cmVjdCB3aWR0aD0iMjQwIiBoZWlnaHQ9IjE2MCIgZmlsbD0iI2VmZWZlZiIvPjxwYXRoIGQ9Ik0wIDEzMCBMNjAgODUgTDEwMCAxMTUgTDE1MCA2MCBMMjQwIDEzMCBWMTYwIEgwWiIgZmlsbD0iI2NmY2ZjZiIvPjxwYXRoIGQ9Ik05NSAxMzBWODBoMTB2LTEwaDEwdjEwaDEwdi0xMGgxMHYxMGgxMHY1MHoiIGZpbGw9IiM4YThhOGEiLz48cmVjdCB4PSIxMjAiIHk9IjEwNiIgd2lkdGg9IjEwIiBoZWlnaHQ9IjI0IiBmaWxsPSIjZWZlZmVmIi8+PC9zdmc+" alt="McNug's fantasy world illustration (placeholder)" width="240" height="160">
+      </div>
+      <div>
+        <h2>McNug's</h2>
+        <p class="guild-lead">Every adventurer needs a guild.</p>
+        <p>McNug's is a little gaming and hobby guild based in Singapore, bringing together D&amp;D players, MTG enthusiasts, gamers and people with wonderfully niche interests.</p>
+        <ul class="tags">
+          <li class="solid">Invitation only</li>
+          <li>Dungeons &amp; Dragons</li>
+          <li>Magic: The Gathering</li>
+          <li>PC &amp; console</li>
+          <li>Tabletop &amp; board games</li>
+        </ul>
+        <div class="guild-stat">
+          <strong>100K+ views on the Reddit post that started it all.</strong>
+          <a class="site" style="margin-top:0" href="https://www.reddit.com/r/ChillSG/s/9cTahfbZ4J" target="_blank" rel="noopener noreferrer">Read the original Reddit post ↗</a>
+        </div>
+        <p style="margin:0">Started with a Reddit post. Growing one adventurer at a time.</p>
+        <div class="invite">
+          <a class="btn" id="invite-link" href="#mcnugs">Request an Invitation <span aria-hidden="true">↗</span></a>
+          <span class="label" id="invite-note">Members join by invitation only. Every request is reviewed by hand.</span>
+        </div>
+      </div>
+    </article>
+  </section>
+
   <footer>
     <h2>See the full body of work.</h2>
     <a class="btn" id="portfolio-link-foot" href="#work">View portfolio <span aria-hidden="true">↗</span></a>
@@ -354,6 +397,10 @@
       gl.replaceWith(a);
     }
   }
+  // Set this to your invitation request form (a Google Form or Tally link works, no email shown). While empty, the button stays on the page.
+  var INVITE_URL = "";
+  var inv = document.getElementById("invite-link");
+  if (inv && INVITE_URL) { inv.href = INVITE_URL; inv.target = "_blank"; inv.rel = "noopener"; }
 </script>
 
 </body></html>
