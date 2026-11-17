@@ -120,17 +120,44 @@
     .set { padding-left: max(16px, env(safe-area-inset-left, 0px)); }
     .btn, .nav { transition: none; }
   }
+
+  /* ===== Zine theme (matches the homepage) ===== */
+  :root, :root:not([data-theme="light"]) { --bg: #f7f5f0; --fg: #111111; --mute: #444444; --line: #111111; --soft: #d6d1c6; --pink: #ff4fa3; --yellow: #ffe14a; color-scheme: light; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #f7f5f0; --fg: #111111; --mute: #444444; --line: #111111; --soft: #d6d1c6; color-scheme: light; } }
+  html { overflow-x: hidden; }
+  ::selection { background: var(--yellow); color: #111; }
+  h1 { display: inline-block; background: var(--yellow); padding: 0 .12em; transform: rotate(-1.5deg); box-shadow: 6px 6px 0 #111; color: #111; }
+  .btn { background: var(--pink); color: #111; border: 3px solid #111; box-shadow: 6px 6px 0 #111; transition: transform .12s ease, box-shadow .12s ease; }
+  .btn:hover { background: var(--pink); color: #111; transform: translate(3px, 3px); box-shadow: 3px 3px 0 #111; }
+  .art { border: 3px solid #111; box-shadow: 5px 5px 0 #111; border-radius: 0; }
+  .reel { padding-block: 12px 14px; }
+  .set { padding-left: 6px; }
+  .nav { top: calc(12px + var(--tile-h) / 2 - 24px); border: 3px solid #111; background: var(--pink); color: #111; box-shadow: 3px 3px 0 #111; }
+  .nav:hover { background: var(--yellow); color: #111; }
+  .hero { position: relative; }
+  .tick { overflow: hidden; white-space: nowrap; background: #111; color: var(--yellow); margin: 0 -9999px; padding: 0 9999px; }
+  .tick-in { display: inline-block; padding: 10px 0; font-family: var(--font-mono); font-size: 13px; letter-spacing: .12em; text-transform: uppercase; animation: tick-move 70s linear infinite; }
+  @keyframes tick-move { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .doodles { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+  .doodles svg { position: absolute; overflow: visible; filter: url(#wobble); }
+  @media (max-width: 900px) { .doodles { display: none; } }
+  @media (max-width: 720px) { .tick-in { font-size: 12px; } }
+  @media (prefers-reduced-motion: reduce) { .tick-in { animation: none; } }
 </style>
 </head>
 <body>
 
 <div class="wrap">
   <header>
-    <a class="wordmark" href="index.html">Sonn</a>
-    <a class="back label" href="index.html">← Back</a>
+    <a class="wordmark" href="/">Sonn</a>
+    <a class="back label" href="/">← Back</a>
   </header>
 
+  <div class="tick" aria-hidden="true"><div class="tick-in">Social content &nbsp;&#10022;&nbsp; Reels &nbsp;&#10022;&nbsp; Video &nbsp;&#10022;&nbsp; Posters &nbsp;&#10022;&nbsp; Websites &nbsp;&#10022;&nbsp; Site audits &nbsp;&#10022;&nbsp; Google Ads &nbsp;&#10022;&nbsp; SEO &nbsp;&#10022;&nbsp; GEO &nbsp;&#10022;&nbsp; Competitive analysis &nbsp;&#10022;&nbsp; Influencer outreach &nbsp;&#10022;&nbsp; Shopify &nbsp;&#10022;&nbsp; E-commerce &nbsp;&#10022;&nbsp; Social content &nbsp;&#10022;&nbsp; Reels &nbsp;&#10022;&nbsp; Video &nbsp;&#10022;&nbsp; Posters &nbsp;&#10022;&nbsp; Websites &nbsp;&#10022;&nbsp; Site audits &nbsp;&#10022;&nbsp; Google Ads &nbsp;&#10022;&nbsp; SEO &nbsp;&#10022;&nbsp; GEO &nbsp;&#10022;&nbsp; Competitive analysis &nbsp;&#10022;&nbsp; Influencer outreach &nbsp;&#10022;&nbsp; Shopify &nbsp;&#10022;&nbsp; E-commerce &nbsp;&#10022;&nbsp;</div></div>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><filter id="wobble"><feTurbulence type="fractalNoise" baseFrequency="0.035" numOctaves="2" seed="4"/><feDisplacementMap in="SourceGraphic" scale="3.5"/></filter></svg>
   <div class="hero">
+    <div class="doodles" aria-hidden="true"><svg viewBox="0 0 24 24" width="46" height="46" style="left:470px;top:30px;transform:rotate(12deg)"><path d="M12 1 C12.5 7 13 10.5 23 12 C13 13.5 12.5 17 12 23 C11.5 17 11 13.5 1 12 C11 10.5 11.5 7 12 1Z" fill="#ffe14a" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg><svg viewBox="0 0 24 24" width="32" height="32" style="left:540px;top:95px;transform:rotate(-8deg)"><path d="M12 1 C12.5 7 13 10.5 23 12 C13 13.5 12.5 17 12 23 C11.5 17 11 13.5 1 12 C11 10.5 11.5 7 12 1Z" fill="#ff4fa3" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg><svg viewBox="0 0 28 26" width="30" height="28" style="left:600px;top:40px;transform:rotate(12deg)" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M14 24 C-6 11 4 -1 14 7 C24 -1 34 11 14 24Z" fill="#ff4fa3"/></svg><svg viewBox="0 0 24 24" width="26" height="26" style="left:-34px;top:60px;transform:rotate(-10deg)"><path d="M12 1 C12.5 7 13 10.5 23 12 C13 13.5 12.5 17 12 23 C11.5 17 11 13.5 1 12 C11 10.5 11.5 7 12 1Z" fill="#ffe14a" stroke="#111" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
     <h1>Portfolio.</h1>
     <p class="lede">Posters, reels and designs from the brands I work with.</p>
   </div>
@@ -153,7 +180,7 @@
 <div class="wrap">
   <footer>
     <h2>Like what you see?</h2>
-    <a class="btn" href="index.html#mcnugs">Back to the main page <span aria-hidden="true">↗</span></a>
+    <a class="btn" href="/#mcnugs">Back to the main page <span aria-hidden="true">↗</span></a>
     <div class="foot-meta">
       <span class="label">Sonn</span>
       <span class="label">Freelance creative, Singapore</span>
