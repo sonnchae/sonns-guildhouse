@@ -278,10 +278,13 @@
     .tags { gap: 6px 16px; }
     .tags li { display: flex; align-items: baseline; gap: 6px; }
     .tags li + li::before, .tags li::before { content: "\2726"; color: #ff4fa3; font-size: 11px; margin: 0; }
+  .about-art { display: block; width: 100%; max-width: 210px; height: auto; margin-top: 18px; overflow: visible; filter: url(#wobble); }
+  section[aria-labelledby="about-title"] .rd { display: none !important; }
   /* Phones: tidy stacking. */
   @media (max-width: 720px) {
     #mcnugs { border-top: 0; padding-top: 28px; }
     .sec-head { flex-direction: column; align-items: flex-start; gap: 6px; }
+    .about-art { max-width: 170px; margin-bottom: 8px; }
   }
   @media (prefers-reduced-motion: reduce) { .tick-in { animation: none; } .btn { transition: none; } }
 </style>
@@ -400,6 +403,16 @@
       <article class="row"><div class="rd rr" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="52" height="52" style="left:980px;top:70px;transform:rotate(8deg)"><circle cx="14" cy="14" r="12" fill="#ffe14a"/><path d="M9 11 V13 M19 11 V13"/><path d="M8 18 Q14 24 20 18"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="28" height="28" style="left:1070px;top:40px;transform:rotate(-8deg)"><path d="M12 1 C12.5 7 13 10.5 23 12 C13 13.5 12.5 17 12 23 C11.5 17 11 13.5 1 12 C11 10.5 11.5 7 12 1Z" fill="#ff4fa3" stroke-width="1.6"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="22" height="22" style="left:930px;top:150px;transform:rotate(10deg)"><path d="M12 1 C12.5 7 13 10.5 23 12 C13 13.5 12.5 17 12 23 C11.5 17 11 13.5 1 12 C11 10.5 11.5 7 12 1Z" fill="#ffe14a" stroke-width="1.6"/></svg></div><div class="rd rl" aria-hidden="true"><svg viewBox="0 0 28 28" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="44" height="44" style="left:150px;top:60px;transform:rotate(8deg)"><circle cx="14" cy="14" r="12" fill="#ffe14a"/><path d="M9 11 V13 M19 11 V13"/><path d="M8 18 Q14 24 20 18"/></svg><svg viewBox="0 0 24 24" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" width="24" height="24" style="left:205px;top:120px;transform:rotate(-8deg)"><path d="M12 1 C12.5 7 13 10.5 23 12 C13 13.5 12.5 17 12 23 C11.5 17 11 13.5 1 12 C11 10.5 11.5 7 12 1Z" fill="#ff4fa3" stroke-width="1.6"/></svg></div>
         <div>
           <span class="label">Beyond work</span>
+          <svg class="about-art" viewBox="0 0 240 170" fill="none" stroke="#111" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+            <rect x="14" y="104" width="52" height="52" fill="#ffe14a"/><path d="M40 118 L43.5 127 L53 128 L46 134 L48 143 L40 138 L32 143 L34 134 L27 128 L36.5 127Z" fill="#fff"/>
+            <rect x="70" y="104" width="52" height="52" fill="#ff4fa3"/><circle cx="96" cy="130" r="12" fill="#fff"/>
+            <rect x="40" y="50" width="52" height="52" fill="#fff" transform="rotate(-8 66 76)"/><path d="M52 78 H80 M66 64 V92" transform="rotate(-8 66 76)"/>
+            <g transform="rotate(10 178 98)"><path d="M178 58 L212 78 V118 L178 138 L144 118 V78Z" fill="#ffe14a"/><path d="M178 72 L198 112 H158Z M178 58 V72 M212 78 L198 112 M144 78 L158 112 M178 138 L158 112 M178 138 L198 112"/></g>
+            <path d="M204 34 C196 26 184 30 188 40 C190 46 198 50 204 56 C210 50 218 46 220 40 C224 30 212 26 204 34Z" fill="#ff4fa3" transform="translate(-8 -14)"/>
+            <path d="M24 30 V6 L44 2 V24" /><circle cx="19" cy="31" r="6" fill="#ff4fa3"/><circle cx="39" cy="26" r="6" fill="#ff4fa3"/>
+            <path d="M118 22 C119 34 121 37 133 38 C121 39 119 42 118 54 C117 42 115 39 103 38 C115 37 117 34 118 22Z" fill="#ffe14a"/>
+            <path d="M138 150 C139 156 140 158 146 159 C140 160 139 162 138 168 C137 162 136 160 130 159 C136 158 137 156 138 150Z" fill="#ff4fa3"/>
+          </svg>
         </div>
         <div>
           <p>I build my own projects outside of work. I started YGG Lash, built its website, and found out how much I love making things online. I also run McNug's, a gaming and hobby guild.</p>
