@@ -66,10 +66,11 @@
   .track { display: flex; width: max-content; }
   .set { display: flex; gap: var(--gap); padding-right: var(--gap); }
 
-  .tile { flex: none; margin: 0; }
+  .tile { flex: none; margin: 0; width: min-content; } /* tile is exactly as wide as its picture; long captions wrap instead of adding empty space */
   .art { display: block; height: var(--tile-h); width: auto; background: var(--soft); border-radius: 2px; -webkit-user-drag: none; }
   .ph { display: grid; place-items: center; height: var(--tile-h); aspect-ratio: 4 / 5; background: var(--soft); color: var(--mute); border-radius: 2px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
-  figcaption { margin-top: 10px; display: grid; gap: 2px; max-width: 28ch; }
+  figcaption { margin-top: 10px; display: grid; gap: 2px; }
+  figcaption > * { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   figcaption .t { font-size: 14px; line-height: 1.4; }
 
   .nav {
@@ -196,30 +197,30 @@
     { src: "art/joya-5-years.jpg", w: 1120, h: 1400, title: "5 Years of Joya", client: "Joya Onsen Café" },
     { src: "art/wanderhow-premium-bbq-sets.jpg", w: 1067, h: 1400, title: "Premium BBQ Sets", client: "Wanderhow BBQ" },
     { src: "art/cafe-fruit-wagashi.jpg", w: 1021, h: 1400, title: "Fruit wagashi", client: "Joya Café" },
-    { src: "art/wanderhow-bbq-steak-meme.jpg", w: 1123, h: 1400, title: "Thanks for changing my life", client: "Wanderhow BBQ" },
-    { src: "art/ygg-anime-lash.jpg", w: 1160, h: 1395, title: "Anime Lash, with DJ Haru", client: "YGG Lash" },
-    { src: "art/panda-eye-care-tips.jpg", w: 1098, h: 1400, title: "Eye care tips", client: "Panda Medical Concierge" },
-    { src: "art/joya-onsen-waterfall.jpg", w: 1003, h: 1400, title: "Onsen pool with waterfall", client: "Joya Onsen Café" },
+    { src: "art/wanderhow-bbq-steak-meme.jpg", w: 1123, h: 1400, title: "Changed my life", client: "Wanderhow BBQ" },
+    { src: "art/ygg-anime-lash.jpg", w: 1160, h: 1395, title: "Anime lash, DJ Haru", client: "YGG Lash" },
+    { src: "art/panda-eye-care-tips.jpg", w: 1098, h: 1400, title: "Eye care tips", client: "Panda Medical" },
+    { src: "art/joya-onsen-waterfall.jpg", w: 1003, h: 1400, title: "Onsen waterfall", client: "Joya Onsen Café" },
     { src: "art/wanderhow-hits-different.jpg", w: 1105, h: 1400, title: "Hits Different", client: "Wanderhow BBQ" },
     { src: "art/cafe-noodle-bowl.jpg", w: 1125, h: 1400, title: "Noodle bowl", client: "Joya Café" },
-    { src: "art/joya-feels-like.jpg", w: 896, h: 1400, title: "This is what Joya feels like", client: "Joya Onsen Café" },
+    { src: "art/joya-feels-like.jpg", w: 896, h: 1400, title: "What Joya feels like", client: "Joya Onsen Café" },
     { src: "art/wanderhow-bbq-claw-machine.jpg", w: 1107, h: 1400, title: "Grab your BBQ bites", client: "Wanderhow BBQ" },
-    { src: "art/panda-brain-foods.jpg", w: 1128, h: 1400, title: "Brain foods", client: "Panda Medical Concierge" },
+    { src: "art/panda-brain-foods.jpg", w: 1128, h: 1400, title: "Brain foods", client: "Panda Medical" },
     { src: "art/wanderhow-grilled-satay.jpg", w: 1030, h: 1400, title: "Delicious Grilled Satay", client: "Wanderhow BBQ" },
     { src: "art/cafe-hanami-dango.jpg", w: 1029, h: 1400, title: "Hanami dango", client: "Joya Café" },
-    { src: "art/ygg-manga-eyelash.jpg", w: 1099, h: 1400, title: "Manga Style Eyelash launch", client: "YGG Lash" },
+    { src: "art/ygg-manga-eyelash.jpg", w: 1099, h: 1400, title: "Manga lash launch", client: "YGG Lash" },
     { src: "art/joya-omakase-lovers.jpg", w: 1120, h: 1400, title: "Omakase Lovers promo", client: "Joya Onsen Café" },
-    { src: "art/panda-salmon-poke-bowl.jpg", w: 1002, h: 1400, title: "Salmon poke bowl", client: "Panda Medical Concierge" },
+    { src: "art/panda-salmon-poke-bowl.jpg", w: 1002, h: 1400, title: "Salmon poke bowl", client: "Panda Medical" },
     { src: "art/wanderhow-wagyu-reel.jpg", w: 801, h: 1400, title: "Wagyu beef (reel)", client: "Wanderhow BBQ" },
     { src: "art/wanderhow-craving-barbecue.jpg", w: 1120, h: 1400, title: "Craving for a Barbecue?", client: "Wanderhow BBQ" },
     { src: "art/cafe-kinako-mochi.jpg", w: 1114, h: 1400, title: "Kinako mochi", client: "Joya Café" },
     { src: "art/joya-onsen-bath.jpg", w: 1020, h: 1400, title: "Onsen bath", client: "Joya Onsen Café" },
     { src: "art/wanderhow-your-ex-is-dry.jpg", w: 1078, h: 1400, title: "Your ex is dry", client: "Wanderhow BBQ" },
-    { src: "art/panda-heart-blood-vessels.jpg", w: 1114, h: 1400, title: "Heart & blood vessels", client: "Panda Medical Concierge" },
+    { src: "art/panda-heart-blood-vessels.jpg", w: 1114, h: 1400, title: "Heart & blood vessels", client: "Panda Medical" },
     { src: "art/joya-omakase.jpg", w: 1050, h: 1400, title: "Omakase menu", client: "Joya Onsen Café" },
-    { src: "art/cafe-crepe-cake.jpg", w: 1025, h: 1400, title: "Crêpe cake with sakura ice cream", client: "Joya Café" },
+    { src: "art/cafe-crepe-cake.jpg", w: 1025, h: 1400, title: "Sakura crêpe cake", client: "Joya Café" },
     { src: "art/joya-membership.jpg", w: 933, h: 1400, title: "Membership special", client: "Joya Onsen Café" },
-    { src: "art/panda-reel-coronary.jpg", w: 759, h: 1400, title: "Coronary heart disease explainer (reel)", client: "Panda Medical Concierge" }
+    { src: "art/panda-reel-coronary.jpg", w: 759, h: 1400, title: "Heart disease (reel)", client: "Panda Medical" }
   ];
 
   function tile(w, hidden) {
