@@ -37,7 +37,7 @@
     overflow-x: hidden;
   }
   a { color: inherit; }
-  a:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--fg); outline-offset: 4px; }
   .wrap { max-width: 1040px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
   .label { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--mute); }
 
@@ -49,26 +49,52 @@
   h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 8.4vw, 92px); line-height: 0.98; letter-spacing: -0.035em; margin: 0; }
   .lede { margin: 24px 0 0; max-width: 52ch; font-size: clamp(17px, 2.2vw, 20px); color: var(--mute); }
 
-  /* Carousel: full-bleed rows that drift slowly in opposite directions. */
-  .reel { overflow: hidden; padding-block: 8px; }
-  .reel + .reel { margin-top: 8px; }
-  .track { display: flex; width: max-content; animation: drift var(--dur, 60s) linear infinite; will-change: transform; }
-  .reel.rev .track { animation-direction: reverse; }
-  .reel:hover .track, .reel:focus-within .track, .reel.paused .track { animation-play-state: paused; }
+  /* Carousel: full-width rows that drift slowly. Hover pauses; drag, swipe or use the arrows to browse. */
+  .rowwrap { position: relative; }
+  .rowwrap + .rowwrap { margin-top: 8px; }
+  .reel {
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-block: 8px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    cursor: grab;
+    overscroll-behavior-x: contain;
+  }
+  .reel::-webkit-scrollbar { display: none; }
+  .reel.dragging { cursor: grabbing; user-select: none; -webkit-user-select: none; }
+  .track { display: flex; width: max-content; }
   .set { display: flex; gap: var(--gap); padding-right: var(--gap); }
-  @keyframes drift { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 
   .tile { flex: none; margin: 0; }
-  .art {
-    display: block;
-    height: var(--tile-h);
-    aspect-ratio: 4 / 5;
-    object-fit: cover;
-    background: var(--soft);
-    border-radius: 2px;
-  }
+  .art { display: block; height: var(--tile-h); width: auto; background: var(--soft); border-radius: 2px; -webkit-user-drag: none; }
   .ph { display: grid; place-items: center; height: var(--tile-h); aspect-ratio: 4 / 5; background: var(--soft); color: var(--mute); border-radius: 2px; font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
-  figcaption { margin-top: 8px; display: flex; justify-content: space-between; gap: 12px; }
+  figcaption { margin-top: 10px; display: grid; gap: 2px; max-width: 28ch; }
+  figcaption .t { font-size: 14px; line-height: 1.4; }
+
+  .nav {
+    position: absolute;
+    top: calc(8px + var(--tile-h) / 2 - 24px);
+    width: 48px; height: 48px;
+    display: none;
+    place-items: center;
+    border: 2px solid var(--fg);
+    border-radius: 50%;
+    background: var(--bg);
+    color: var(--fg);
+    font: 500 20px/1 var(--font-display);
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity .15s ease, background .15s ease, color .15s ease;
+    z-index: 2;
+  }
+  .nav.prev { left: max(16px, env(safe-area-inset-left, 0px)); }
+  .nav.next { right: max(16px, env(safe-area-inset-right, 0px)); }
+  .nav:hover { background: var(--fg); color: var(--bg); }
+  @media (hover: hover) and (pointer: fine) {
+    .nav { display: grid; }
+    .rowwrap:hover .nav, .nav:focus-visible { opacity: 1; }
+  }
 
   .hint { margin: 20px 0 0; }
 
@@ -83,16 +109,16 @@
     .btn { width: 100%; justify-content: space-between; }
   }
   /* Large monitors: scale up, same as the main page. */
-  @media (min-width: 1600px) { .wrap { zoom: 1.2; } .reel { zoom: 1.2; } }
-  @media (min-width: 2200px) { .wrap { zoom: 1.5; } .reel { zoom: 1.5; } }
+  @media (min-width: 1600px) { .wrap, .rowwrap { zoom: 1.2; } }
+  @media (min-width: 2200px) { .wrap, .rowwrap { zoom: 1.5; } }
 
-  /* Reduced motion: no drifting, swipe through by hand instead. */
+  /* Reduced motion: no drifting; people browse by hand and the scrollbar stays visible. */
   @media (prefers-reduced-motion: reduce) {
-    .reel { overflow-x: auto; }
-    .track { animation: none; }
+    .reel { scrollbar-width: thin; }
+    .reel::-webkit-scrollbar { display: block; height: 8px; }
     .set + .set { display: none; }
     .set { padding-left: max(16px, env(safe-area-inset-left, 0px)); }
-    .btn { transition: none; }
+    .btn, .nav { transition: none; }
   }
 </style>
 </head>
@@ -111,9 +137,17 @@
 </div>
 
 <main>
-  <div class="reel" id="row-a" aria-label="Selected artwork, row 1"><div class="track"></div></div>
-  <div class="reel rev" id="row-b" aria-label="Selected artwork, row 2"><div class="track"></div></div>
-  <div class="wrap"><p class="hint label">Hover or press and hold to pause.</p></div>
+  <div class="rowwrap" data-dir="1">
+    <button class="nav prev" type="button" aria-label="Scroll row 1 back">←</button>
+    <div class="reel" id="row-a" role="region" aria-label="Selected artwork, row 1" tabindex="0"><div class="track"></div></div>
+    <button class="nav next" type="button" aria-label="Scroll row 1 forward">→</button>
+  </div>
+  <div class="rowwrap" data-dir="-1">
+    <button class="nav prev" type="button" aria-label="Scroll row 2 back">←</button>
+    <div class="reel" id="row-b" role="region" aria-label="Selected artwork, row 2" tabindex="0"><div class="track"></div></div>
+    <button class="nav next" type="button" aria-label="Scroll row 2 forward">→</button>
+  </div>
+  <div class="wrap"><p class="hint label">Hover to pause. Drag, swipe or use the arrows to browse.</p></div>
 </main>
 
 <div class="wrap">
@@ -129,17 +163,36 @@
 
 <script>
   // ADD YOUR ARTWORK HERE.
-  // One entry per piece. "src" is the image file (put the file next to this page, e.g. "joya-poster-1.jpg").
-  // While "src" is empty, a grey placeholder shows. Add as many entries as you like; the carousel adjusts.
+  // One entry per piece. "src" is the image file in the art folder; "w" and "h" are its pixel size.
+  // Leave "src" empty to show a grey placeholder. Add as many entries as you like; the carousel adjusts.
   var WORKS = [
-    { src: "", title: "Artwork 01", client: "Joya Onsen Café" },
-    { src: "", title: "Artwork 02", client: "Wanderhow BBQ" },
-    { src: "", title: "Artwork 03", client: "Panda Medical Concierge" },
-    { src: "", title: "Artwork 04", client: "YGG Lash" },
-    { src: "", title: "Artwork 05", client: "Joya Onsen Café" },
-    { src: "", title: "Artwork 06", client: "Wanderhow BBQ" },
-    { src: "", title: "Artwork 07", client: "Panda Medical Concierge" },
-    { src: "", title: "Artwork 08", client: "YGG Lash" }
+    { src: "art/joya-5-years.jpg", w: 1120, h: 1400, title: "5 Years of Joya", client: "Joya Onsen Café" },
+    { src: "art/wanderhow-premium-bbq-sets.jpg", w: 1067, h: 1400, title: "Premium BBQ Sets", client: "Wanderhow BBQ" },
+    { src: "art/cafe-fruit-wagashi.jpg", w: 1021, h: 1400, title: "Fruit wagashi", client: "Joya Café" },
+    { src: "art/wanderhow-bbq-steak-meme.jpg", w: 1123, h: 1400, title: "Thanks for changing my life", client: "Wanderhow BBQ" },
+    { src: "art/ygg-anime-lash.jpg", w: 1160, h: 1395, title: "Anime Lash, with DJ Haru", client: "YGG Lash" },
+    { src: "art/panda-eye-care-tips.jpg", w: 1098, h: 1400, title: "Eye care tips", client: "Panda Medical Concierge" },
+    { src: "art/joya-onsen-waterfall.jpg", w: 1003, h: 1400, title: "Onsen pool with waterfall", client: "Joya Onsen Café" },
+    { src: "art/wanderhow-hits-different.jpg", w: 1105, h: 1400, title: "Hits Different", client: "Wanderhow BBQ" },
+    { src: "art/cafe-noodle-bowl.jpg", w: 1125, h: 1400, title: "Noodle bowl", client: "Joya Café" },
+    { src: "art/joya-feels-like.jpg", w: 896, h: 1400, title: "This is what Joya feels like", client: "Joya Onsen Café" },
+    { src: "art/wanderhow-bbq-claw-machine.jpg", w: 1107, h: 1400, title: "Grab your BBQ bites", client: "Wanderhow BBQ" },
+    { src: "art/panda-brain-foods.jpg", w: 1128, h: 1400, title: "Brain foods", client: "Panda Medical Concierge" },
+    { src: "art/wanderhow-grilled-satay.jpg", w: 1030, h: 1400, title: "Delicious Grilled Satay", client: "Wanderhow BBQ" },
+    { src: "art/cafe-hanami-dango.jpg", w: 1029, h: 1400, title: "Hanami dango", client: "Joya Café" },
+    { src: "art/ygg-manga-eyelash.jpg", w: 1099, h: 1400, title: "Manga Style Eyelash launch", client: "YGG Lash" },
+    { src: "art/joya-omakase-lovers.jpg", w: 1120, h: 1400, title: "Omakase Lovers promo", client: "Joya Onsen Café" },
+    { src: "art/panda-salmon-poke-bowl.jpg", w: 1002, h: 1400, title: "Salmon poke bowl", client: "Panda Medical Concierge" },
+    { src: "art/wanderhow-wagyu-reel.jpg", w: 801, h: 1400, title: "Wagyu beef (reel)", client: "Wanderhow BBQ" },
+    { src: "art/wanderhow-craving-barbecue.jpg", w: 1120, h: 1400, title: "Craving for a Barbecue?", client: "Wanderhow BBQ" },
+    { src: "art/cafe-kinako-mochi.jpg", w: 1114, h: 1400, title: "Kinako mochi", client: "Joya Café" },
+    { src: "art/joya-onsen-bath.jpg", w: 1020, h: 1400, title: "Onsen bath", client: "Joya Onsen Café" },
+    { src: "art/wanderhow-your-ex-is-dry.jpg", w: 1078, h: 1400, title: "Your ex is dry", client: "Wanderhow BBQ" },
+    { src: "art/panda-heart-blood-vessels.jpg", w: 1114, h: 1400, title: "Heart & blood vessels", client: "Panda Medical Concierge" },
+    { src: "art/joya-omakase.jpg", w: 1050, h: 1400, title: "Omakase menu", client: "Joya Onsen Café" },
+    { src: "art/cafe-crepe-cake.jpg", w: 1025, h: 1400, title: "Crêpe cake with sakura ice cream", client: "Joya Café" },
+    { src: "art/joya-membership.jpg", w: 933, h: 1400, title: "Membership special", client: "Joya Onsen Café" },
+    { src: "art/panda-reel-coronary.jpg", w: 759, h: 1400, title: "Coronary heart disease explainer (reel)", client: "Panda Medical Concierge" }
   ];
 
   function tile(w, hidden) {
@@ -151,7 +204,7 @@
       art.className = "art";
       art.src = w.src;
       art.alt = hidden ? "" : (w.title + " for " + w.client);
-      art.loading = "lazy";
+      if (w.w && w.h) { art.width = w.w; art.height = w.h; art.style.aspectRatio = w.w + " / " + w.h; }
       art.draggable = false;
     } else {
       art = document.createElement("div");
@@ -162,6 +215,7 @@
     var c = document.createElement("figcaption");
     var a = document.createElement("span"); a.className = "label"; a.textContent = w.client;
     c.appendChild(a);
+    if (w.src) { var t = document.createElement("span"); t.className = "t"; t.textContent = w.title; c.appendChild(t); }
     f.appendChild(c);
     if (hidden) f.setAttribute("aria-hidden", "true");
     return f;
@@ -175,19 +229,93 @@
       list.forEach(function (w) { set.appendChild(tile(w, copy === 1)); });
       track.appendChild(set);
     }
-    // Slower drift when there is more to see.
-    track.style.setProperty("--dur", Math.max(30, list.length * 9) + "s");
   }
 
+  var half = Math.ceil(WORKS.length / 2);
   build("row-a", WORKS);
-  build("row-b", WORKS.slice().reverse());
+  build("row-b", WORKS.slice(half).concat(WORKS.slice(0, half)));
 
-  // Press and hold (touch) pauses the row.
-  document.querySelectorAll(".reel").forEach(function (r) {
-    r.addEventListener("touchstart", function () { r.classList.add("paused"); }, { passive: true });
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var SPEED = window.innerWidth < 720 ? 28 : 42;   // pixels per second
+
+  document.querySelectorAll(".rowwrap").forEach(function (wrapEl) {
+    var reel = wrapEl.querySelector(".reel");
+    var dir = parseInt(wrapEl.getAttribute("data-dir"), 10) || 1;
+    var holds = 0;            // pause reasons currently active
+    var hover = false, dragging = false, touching = false, visible = true, focused = false;
+    var pos = 0, last = 0, resumeTimer = null;
+
+    function loopWidth() { return reel.scrollWidth / 2; }
+    function wrap() {
+      var w = loopWidth();
+      if (!w) return;
+      if (pos >= w) { pos -= w; reel.scrollLeft = pos; }
+      else if (pos <= 0) { pos += w; reel.scrollLeft = pos; }
+    }
+    function paused() { return reduce || hover || dragging || touching || focused || !visible || document.hidden; }
+
+    function start() {
+      if (reduce) return;
+      pos = loopWidth(); reel.scrollLeft = pos;
+      requestAnimationFrame(function tick(now) {
+        var dt = last ? Math.min(now - last, 64) : 16; last = now;
+        if (!paused()) {
+          pos += dir * SPEED * dt / 1000;
+          wrap();
+          reel.scrollLeft = pos;
+        }
+        requestAnimationFrame(tick);
+      });
+    }
+
+    // Keep our position in sync when the person scrolls by hand.
+    reel.addEventListener("scroll", function () {
+      if (paused()) { pos = reel.scrollLeft; wrap(); }
+    }, { passive: true });
+
+    wrapEl.addEventListener("pointerenter", function (e) { if (e.pointerType === "mouse") hover = true; });
+    wrapEl.addEventListener("pointerleave", function (e) { if (e.pointerType === "mouse") { hover = false; dragging = false; reel.classList.remove("dragging"); } });
+    reel.addEventListener("focus", function () { focused = true; });
+    reel.addEventListener("blur", function () { focused = false; });
+
+    // Touch: pause while a finger is down, resume a moment after.
+    reel.addEventListener("touchstart", function () { touching = true; clearTimeout(resumeTimer); }, { passive: true });
     ["touchend", "touchcancel"].forEach(function (ev) {
-      r.addEventListener(ev, function () { r.classList.remove("paused"); }, { passive: true });
+      reel.addEventListener(ev, function () { clearTimeout(resumeTimer); resumeTimer = setTimeout(function () { touching = false; pos = reel.scrollLeft; }, 2500); }, { passive: true });
     });
+
+    // Mouse drag.
+    var startX = 0, startLeft = 0;
+    reel.addEventListener("pointerdown", function (e) {
+      if (e.pointerType !== "mouse" || e.button !== 0) return;
+      dragging = true; startX = e.clientX; startLeft = reel.scrollLeft;
+      reel.classList.add("dragging");
+      try { reel.setPointerCapture(e.pointerId); } catch (err) {}
+    });
+    reel.addEventListener("pointermove", function (e) {
+      if (!dragging) return;
+      reel.scrollLeft = startLeft - (e.clientX - startX);
+    });
+    function endDrag() { dragging = false; reel.classList.remove("dragging"); }
+    reel.addEventListener("pointerup", endDrag);
+    reel.addEventListener("pointercancel", endDrag);
+
+    // Arrow buttons and keyboard.
+    function nudge(sign) { reel.scrollBy({ left: sign * Math.round(reel.clientWidth * 0.8), behavior: reduce ? "auto" : "smooth" }); }
+    wrapEl.querySelector(".prev").addEventListener("click", function () { nudge(-1); });
+    wrapEl.querySelector(".next").addEventListener("click", function () { nudge(1); });
+    reel.addEventListener("keydown", function (e) {
+      if (e.key === "ArrowLeft") { e.preventDefault(); nudge(-1); }
+      if (e.key === "ArrowRight") { e.preventDefault(); nudge(1); }
+    });
+
+    // Don't animate rows that are off screen.
+    if ("IntersectionObserver" in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }).observe(wrapEl);
+    }
+
+    // Start after images have a size (they have width/height set, so layout is already stable).
+    start();
   });
 </script>
 </body>
